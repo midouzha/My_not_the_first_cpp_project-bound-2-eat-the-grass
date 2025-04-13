@@ -1,0 +1,12 @@
+﻿  FileName.cpp
+C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(198,58): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(209,127): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(209,79): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(209,49): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(222,131): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(222,101): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(222,45): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+  head.cpp
+  main.cpp
+  正在生成代码...
+  我是羊.vcxproj -> C:\Users\13744\Desktop\我是羊\x64\Debug\我是羊.exe
