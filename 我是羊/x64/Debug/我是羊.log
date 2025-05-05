@@ -1,12 +1,12 @@
-﻿  FileName.cpp
-C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(198,58): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(209,127): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(209,79): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(209,49): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(222,131): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(222,101): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-C:\Users\13744\Desktop\我是羊\我是羊\FileName.cpp(222,45): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-  head.cpp
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: 中间目录(x64\Debug\)包含从另一个项目(我是羊.vcxproj)共享的文件。   这会导致错误的清除和重新生成行为。
   main.cpp
-  正在生成代码...
-  我是羊.vcxproj -> C:\Users\13744\Desktop\我是羊\x64\Debug\我是羊.exe
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(16,14): warning C4305: “初始化”: 从“int”到“COLOR16”截断
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(16,16): warning C4309: “初始化”: 截断常量值
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(273,58): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(284,127): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(284,79): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(284,49): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(297,131): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(297,101): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(297,45): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+  我是羊.vcxproj -> C:\Users\13744\Desktop\imSheep\x64\Debug\imSheep.exe
