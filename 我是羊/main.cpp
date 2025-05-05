@@ -32,20 +32,23 @@ public:
     // 绘制按钮
     void draw() {
         ExMessage bmsg;
-        peekmessage(&bmsg, EX_MOUSE);
-        isHovered = isMouseHover(bmsg.x, bmsg.y);
+        if (peekmessage(&bmsg, EX_MOUSE)) {
+            isHovered = isMouseHover(bmsg.x, bmsg.y);
+        }
         if (isHovered) {
             setfillcolor(LIGHTGRAY);
         }
         else {
             setfillcolor(GRAY);
         }
+        setlinecolor(BLACK);
         fillrectangle(x, y, x + width, y + height);
 
         settextcolor(WHITE);
+        setbkmode(TRANSPARENT);
         LOGFONT f;
         gettextstyle(&f);
-        f.lfHeight = 20; 
+        f.lfHeight = 20; // 调整按钮文字字号
         settextstyle(&f);
         int textX = x + (width - textwidth(text.c_str())) / 2;
         int textY = y + (height - textheight(text.c_str())) / 2;
@@ -56,8 +59,8 @@ public:
         return (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height);
     }
 
-    bool isClicked(int mouseX, int mouseY,ExMessage &msg) {
-        return isMouseHover(mouseX, mouseY)||msg.message==WM_LBUTTONDOWN;
+    bool isClicked(int mouseX, int mouseY) {
+        return isMouseHover(mouseX, mouseY);
     }
 };
 
@@ -120,8 +123,9 @@ private:
     bool isEating;
     int eatTimeLeft;
     int currentTargetGrassIndex;
+    int grassEatenCount;
 public:
-    Sheep(int _x, int _y, int speed, IMAGE* img, IMAGE* msk) : x(_x), y(_y), targetX(_x), targetY(_y), isMoving(false), MOVE_SPEED(speed), image(img), mask(msk), isEating(false), eatTimeLeft(100), currentTargetGrassIndex(-1) {}
+    Sheep(int _x, int _y, int speed, IMAGE* img, IMAGE* msk) : x(_x), y(_y), targetX(_x), targetY(_y), isMoving(false), MOVE_SPEED(speed), image(img), mask(msk), isEating(false), eatTimeLeft(100), currentTargetGrassIndex(-1), grassEatenCount(0) {}
 
     void draw() {
         putimage(x, y, mask, NOTSRCERASE);
@@ -193,6 +197,7 @@ public:
                     isEating = false;
                     currentTargetGrassIndex = -1;
                     currentGrass.resetSheepEatingCount();
+                    grassEatenCount++;
                     findNearestGrass(grasses);
                 }
             }
@@ -203,6 +208,14 @@ public:
         int x_c = x + (image->getwidth() / 2);
         int y_c = y + (image->getheight() / 2);
         return x_c >= left && x_c <= right && y_c >= top && y_c <= bottom;
+    }
+
+    int getGrassEatenCount() const {
+        return grassEatenCount;
+    }
+
+    void setGrassEatenCount(int count) {
+        grassEatenCount = count;
     }
 };
 
@@ -238,9 +251,11 @@ private:
     int round;
     int bestScore;
     bool gameOver;
+    bool isKongrongMode;
+    int kongrongBestScore;
 
 public:
-    Game() : stage(0), seed(300), grassCount(GRASS_LIMIT), round(0), bestScore(0), gameOver(false) {
+    Game() : stage(0), seed(300), grassCount(GRASS_LIMIT), round(0), bestScore(0), gameOver(false), isKongrongMode(false), kongrongBestScore(0) {
         srand(static_cast<unsigned int>(time(nullptr)));
         initgraph(width, height);
 
@@ -330,18 +345,45 @@ public:
                     setbkmode(TRANSPARENT);
                     generateRectangles();
                 }
-                else if (stage == 1 && grassCount > 0) {
-                    grasses.emplace_back(msg.x, msg.y, &grassImage, &grassMask);
-                    grassCount--;
+                else if (stage == 1) {
+                    if (!isKongrongMode && grassCount > 0) {
+                        grasses.emplace_back(msg.x, msg.y, &grassImage, &grassMask);
+                        grassCount--;
+                    }
+                    else if (isKongrongMode) {
+                        grasses.emplace_back(msg.x, msg.y, &grassImage, &grassMask);
+                    }
                 }
-                else if (stage == 1 && gameOver) {
-                    if (msg.x>= width - 120&& msg.x <= width&& msg.y>= height - 40&& msg.y <= height&&
-                        msg.message==WM_LBUTTONDOWN) {
+                if (stage == 1 && gameOver) {
+                    Button restart = Button(width - 120, height - 40, 120, 40, "重新来过！");
+                    if (restart.isClicked(msg.x, msg.y)) {
                         gameOver = false;
                         stage = 1;
                         grassCount = GRASS_LIMIT;
                         grasses.clear();
                         generateRectangles();
+                        if (isKongrongMode) {
+                            sheeps[0].setGrassEatenCount(0);
+                            sheeps[1].setGrassEatenCount(0);
+                        }
+                        else {
+                            round = 0;
+                        }
+                    }
+                }
+                Button switchMode = Button(10, height - 40, 120, 40, "切换模式");
+                if (switchMode.isClicked(msg.x, msg.y)) {
+                    isKongrongMode = !isKongrongMode;
+                    gameOver = false;
+                    stage = 1;
+                    grassCount = GRASS_LIMIT;
+                    grasses.clear();
+                    generateRectangles();
+                    if (isKongrongMode) {
+                        sheeps[0].setGrassEatenCount(0);
+                        sheeps[1].setGrassEatenCount(0);
+                    }
+                    else {
                         round = 0;
                     }
                 }
@@ -354,6 +396,15 @@ public:
             sheeps[1].isInsideRect(rectangles[1].getLeft(), rectangles[1].getTop(), rectangles[1].getRight(), rectangles[1].getBottom())) ||
             (sheeps[1].isInsideRect(rectangles[0].getLeft(), rectangles[0].getTop(), rectangles[0].getRight(), rectangles[0].getBottom()) &&
                 sheeps[0].isInsideRect(rectangles[1].getLeft(), rectangles[1].getTop(), rectangles[1].getRight(), rectangles[1].getBottom()));
+    }
+
+    int calculateKongrongScore() {
+        int bigSheepEaten = sheeps[1].getGrassEatenCount();
+        int smallSheepEaten = sheeps[0].getGrassEatenCount();
+        if (smallSheepEaten == 0) {
+            return bigSheepEaten * bigSheepEaten;
+        }
+        return bigSheepEaten * bigSheepEaten / smallSheepEaten;
     }
 
     void update() {
@@ -381,17 +432,19 @@ public:
                 }
             }
 
-            if (checkWin()) {
-                round++;
-                if (round > bestScore) {
-                    bestScore = round;
+            if (!isKongrongMode) {
+                if (checkWin()) {
+                    round++;
+                    if (round > bestScore) {
+                        bestScore = round;
+                    }
+                    grassCount = GRASS_LIMIT;
+                    grasses.clear();
+                    generateRectangles();
                 }
-                grassCount = GRASS_LIMIT;
-                grasses.clear();
-                generateRectangles();
-            }
-            else if (grassCount == 0 && grasses.empty() && !checkWin()) {
-                gameOver = true;
+                else if (grassCount == 0 && grasses.empty() && !checkWin()) {
+                    gameOver = true;
+                }
             }
         }
     }
@@ -412,27 +465,45 @@ public:
             for (auto& sheep : sheeps) {
                 sheep.draw();
             }
-            for (auto& rect : rectangles) {
-                rect.draw();
+            if (!isKongrongMode) {
+                for (auto& rect : rectangles) {
+                    rect.draw();
+                }
             }
 
             settextcolor(WHITE);
             LOGFONT f;
             gettextstyle(&f);
-            f.lfHeight = 25; 
+            f.lfHeight = 25;
             settextstyle(&f);
             char info[100];
-            sprintf_s(info, "游戏模式: 栅栏挑战  草数量: %d  回合数: %d  最好成绩: %d", grassCount, round, bestScore);
+            if (!isKongrongMode) {
+                sprintf_s(info, "游戏模式: 栅栏挑战  草数量: %d  回合数: %d  最好成绩: %d", grassCount, round, bestScore);
+            }
+            else {
+                int score = calculateKongrongScore();
+                if (score > kongrongBestScore) {
+                    kongrongBestScore = score;
+                }
+                sprintf_s(info, "游戏模式: 孔融让梨  得分: %d  最高得分: %d", score, kongrongBestScore);
+            }
             outtextxy(10, 10, info);
 
             if (gameOver) {
                 settextcolor(RED);
                 char gameOverMsg[100];
-                sprintf_s(gameOverMsg, "游戏失败！最高连胜回合数: %d", bestScore);
+                if (!isKongrongMode) {
+                    sprintf_s(gameOverMsg, "游戏失败！最高连胜回合数: %d", bestScore);
+                }
+                else {
+                    sprintf_s(gameOverMsg, "游戏结束！最高得分: %d", kongrongBestScore);
+                }
                 outtextxy(width / 2 - textwidth(gameOverMsg) / 2, height / 2, gameOverMsg);
                 Button restart = Button(width - 120, height - 40, 120, 40, "重新来过！");
                 restart.draw();
             }
+            Button switchMode = Button(10, height - 40, 120, 40, "切换模式");
+            switchMode.draw();
         }
         EndBatchDraw();
 

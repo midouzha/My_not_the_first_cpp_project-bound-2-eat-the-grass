@@ -1,6 +1,16 @@
-﻿  正在生成代码
-  0 of 288 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+﻿  main.cpp
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(16,14): warning C4305: “初始化”: 从“int”到“COLOR16”截断
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(16,16): warning C4309: “初始化”: 截断常量值
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(288,58): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(299,127): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(299,79): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(299,49): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(312,131): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(312,101): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13744\Desktop\imSheep\我是羊\main.cpp(312,45): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+  正在生成代码
+  2 of 292 functions ( 0.7%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
   我是羊.vcxproj -> C:\Users\13744\Desktop\imSheep\x64\Release\imSheep.exe
