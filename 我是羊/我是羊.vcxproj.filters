@@ -15,13 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="ROUGE.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="head.cpp">
       <Filter>头文件</Filter>
     </ClCompile>
-    <ClCompile Include="backup.cpp">
+    <ClCompile Include="inteli.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
